@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
         val binding = HomeFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.acronymList.adapter = AcronymAdapter()
 
         return binding.root
     }
