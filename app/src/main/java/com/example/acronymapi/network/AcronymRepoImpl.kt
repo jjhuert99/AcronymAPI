@@ -9,9 +9,9 @@ class AcronymRepoImpl @Inject constructor(
     private val dispatcher: Dispatchers,
     private val retroObject: AcronymEndpoints
 ) : AcronymRepo {
-    override suspend fun getResults(): ServiceResult<List<DataModel>?> {
+    override suspend fun getResults(acc: String): ServiceResult<List<DataModel>?> {
         return withContext(dispatcher.IO){
-            val data = retroObject.getResults()
+            val data = retroObject.getResults(acc = acc)
             if(data.isSuccessful){
                 ServiceResult.Success(data.body())
             }else{

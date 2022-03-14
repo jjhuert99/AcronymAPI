@@ -21,19 +21,26 @@ class HomeViewModel @Inject constructor(
     var _accResults = MutableLiveData<List<AcronymResults>?>()
     val accResults = _accResults
 
-    init {
-        getAcronymResults()
+    var goodSearch = MutableLiveData<Boolean>()
+
+    var searchWord = MutableLiveData<String>()
+
+    fun checkLength():Boolean{
+        return searchWord.value?.length ?: 0 >= 1
     }
 
-    private fun getAcronymResults() {
+    fun getAcronymResults(){
         viewModelScope.launch(dispatchers.IO){
-            when(val response = retroObject.getResults()){
+            when(val response = retroObject.getResults(searchWord.value.toString())){
                 is ServiceResult.Success->{
-                    _accResults.postValue(response?.data?.get(0)?.lfs)
+                    if(response.data.isNullOrEmpty()){
+                        goodSearch.postValue(false)
+                    }else {
+                        goodSearch.postValue(true)
+                        _accResults.postValue(response.data?.get(0)?.lfs)
+                    }
                 }
-                is ServiceResult.Error->{
-
-                }
+                is ServiceResult.Error->{}
                 else->{}
             }
         }
