@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AcronymAPI</string>
     <string name="enter_an_acronym">Enter an Acronym</string>
+    <string name="no_results_for_acronym_try_another">No Results for Acronym, Try Another</string>
 </resources>
