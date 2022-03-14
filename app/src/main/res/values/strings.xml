@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AcronymAPI</string>
+    <string name="enter_an_acronym">Enter an Acronym</string>
 </resources>
