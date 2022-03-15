@@ -1,5 +1,6 @@
 package com.example.acronymapi.ui.home
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,13 +9,15 @@ import com.example.acronymapi.common.ServiceResult
 import com.example.acronymapi.network.AcronymRepo
 import com.example.acronymapi.network.AcronymResults
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val dispatchers: Dispatchers,
+    private val app: Application,
+    private val dispatchers: CoroutineDispatcher,
     private val retroObject: AcronymRepo
 ) : ViewModel() {
 
@@ -26,11 +29,11 @@ class HomeViewModel @Inject constructor(
     var searchWord = MutableLiveData<String>()
 
     fun checkLength():Boolean{
-        return searchWord.value?.length ?: 0 >= 1
+        return searchWord.value?.length ?: 0 > 1
     }
 
     fun getAcronymResults(){
-        viewModelScope.launch(dispatchers.IO){
+        viewModelScope.launch(dispatchers){
             when(val response = retroObject.getResults(searchWord.value.toString())){
                 is ServiceResult.Success->{
                     if(response.data.isNullOrEmpty()){
