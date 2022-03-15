@@ -24,17 +24,6 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         binding.acronymList.adapter = AcronymAdapter()
 
-        binding.editTextField.doOnTextChanged { _, _, _, _ ->
-            if(!viewModel.checkLength()){
-                binding.textField.isErrorEnabled = true
-                binding.textField.error = "Seacrh Term must be 2 Characters or More"
-                binding.searchButton.isEnabled = false
-            }else{
-                binding.textField.isErrorEnabled = false
-                binding.searchButton.isEnabled = true
-            }
-        }
-
         viewModel.goodSearch.observe(viewLifecycleOwner){
             if(viewModel.goodSearch.value == false){
                 binding.badSearch.visibility = View.VISIBLE
@@ -42,6 +31,17 @@ class HomeFragment : Fragment() {
             }else {
                 binding.badSearch.visibility = View.GONE
                 binding.acronymList.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.searchWord.observe(viewLifecycleOwner){
+            if(!viewModel.checkLength()){
+                binding.textField.isErrorEnabled = true
+                binding.textField.error = "Seacrh Term must be 2 Characters or More"
+                binding.searchButton.isEnabled = false
+            }else{
+                binding.textField.isErrorEnabled = false
+                binding.searchButton.isEnabled = true
             }
         }
 
